@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>ESTEBAN FX — Plataforma de Análisis & Trading</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -35,90 +35,115 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Rajdhani', sans-serif; background: #05050a; }
+    body { font-family: 'Rajdhani', sans-serif; background: #05050a; margin: 0; }
     .font-display { font-family: 'Orbitron', sans-serif; }
-    .glow-cyan { box-shadow: 0 0 15px rgba(0,245,255,0.3); }
-    .glow-pink { box-shadow: 0 0 15px rgba(255,0,170,0.3); }
-    .glow-green { box-shadow: 0 0 12px rgba(0,255,157,0.25); }
-    .chart-container { min-height: 520px; }
-    .scrollbar-thin::-webkit-scrollbar { height: 6px; width: 6px; }
+    .glow-cyan { box-shadow: 0 0 12px rgba(0,245,255,0.25); }
+    
+    .chart-box {
+      display: flex;
+      flex-direction: column;
+      background: #12121c;
+      border: 1px solid #2a2a3a;
+      border-radius: 12px;
+      overflow: hidden;
+      height: 72vh;
+      min-height: 450px;
+    }
+    
+    .chart-header {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: #0a0a12;
+      border-bottom: 1px solid #2a2a3a;
+    }
+    
+    .chart-body {
+      flex: 1;
+      position: relative;
+      width: 100%;
+      min-height: 0;
+    }
+    
+    .chart-body iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar { height: 5px; width: 5px; }
     .scrollbar-thin::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
-    .tv-iframe { width: 100%; height: 100%; border: none; }
   </style>
 </head>
 <body class="text-gray-100 min-h-screen flex flex-col">
 
-  <header class="border-b border-neon-cyan/20 bg-dark-900/90 backdrop-blur sticky top-0 z-50">
-    <div class="px-4 py-3 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-neon-cyan to-neon-purple flex items-center justify-center font-display font-black text-dark-950 text-lg">EF</div>
+  <header class="border-b border-neon-cyan/20 bg-dark-900/95 backdrop-blur sticky top-0 z-50">
+    <div class="px-3 py-2.5 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-neon-cyan to-neon-purple flex items-center justify-center font-display font-black text-dark-950 text-sm">EF</div>
         <div>
-          <h1 class="font-display font-bold text-xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-neon-pink">ESTEBAN FX</h1>
-          <p class="text-xs text-gray-500 tracking-widest">MULTI-CHART ANALYSIS PLATFORM</p>
+          <h1 class="font-display font-bold text-lg tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-neon-pink">ESTEBAN FX</h1>
         </div>
       </div>
-      <div class="flex items-center gap-4">
-        <div class="hidden md:flex items-center gap-2 text-sm">
-          <span class="w-2 h-2 rounded-full bg-neon-green animate-pulse"></span>
-          <span class="text-neon-green">LIVE</span>
-        </div>
-        <button onclick="toggleMT5()" class="px-4 py-1.5 rounded-lg bg-neon-orange/20 border border-neon-orange/50 text-neon-orange text-sm font-semibold hover:bg-neon-orange/30 transition">MT5 Terminal</button>
-        <button onclick="addChart()" class="px-4 py-1.5 rounded-lg bg-neon-cyan/20 border border-neon-cyan/50 text-neon-cyan text-sm font-semibold hover:bg-neon-cyan/30 transition">+ Añadir Gráfico</button>
+      <div class="flex items-center gap-2">
+        <button onclick="toggleMT5()" class="px-3 py-1.5 rounded-lg bg-neon-orange/20 border border-neon-orange/50 text-neon-orange text-xs font-semibold">MT5</button>
+        <button onclick="addChart()" class="px-3 py-1.5 rounded-lg bg-neon-cyan/20 border border-neon-cyan/50 text-neon-cyan text-xs font-semibold">+ Gráfico</button>
       </div>
     </div>
   </header>
 
   <section class="bg-dark-800 border-b border-neon-pink/20">
-    <div class="px-4 py-2 flex items-center justify-between">
-      <h2 class="font-display text-sm tracking-wider text-neon-pink flex items-center gap-2">
+    <div class="px-3 py-1.5 flex items-center justify-between">
+      <h2 class="font-display text-xs tracking-wider text-neon-pink flex items-center gap-1.5">
         <span class="w-1.5 h-1.5 rounded-full bg-neon-pink"></span> OPERACIONES ABIERTAS
       </h2>
-      <button onclick="togglePositions()" class="text-xs text-gray-400 hover:text-white">Mostrar / Ocultar</button>
+      <button onclick="togglePositions()" class="text-xs text-gray-400">Mostrar/Ocultar</button>
     </div>
-    <div id="positionsPanel" class="px-4 pb-3 overflow-x-auto scrollbar-thin">
-      <table class="w-full text-sm min-w-[900px]">
+    <div id="positionsPanel" class="px-3 pb-2 overflow-x-auto scrollbar-thin">
+      <table class="w-full text-xs min-w-[700px]">
         <thead>
-          <tr class="text-gray-500 text-xs uppercase tracking-wider">
-            <th class="text-left py-1 pr-4">Par</th>
-            <th class="text-left py-1 pr-4">Tipo</th>
-            <th class="text-left py-1 pr-4">Volumen</th>
-            <th class="text-left py-1 pr-4">Precio Apertura</th>
-            <th class="text-left py-1 pr-4">SL</th>
-            <th class="text-left py-1 pr-4">TP</th>
-            <th class="text-left py-1 pr-4">Precio Actual</th>
-            <th class="text-left py-1 pr-4">Profit</th>
+          <tr class="text-gray-500 uppercase tracking-wider">
+            <th class="text-left py-1 pr-3">Par</th>
+            <th class="text-left py-1 pr-3">Tipo</th>
+            <th class="text-left py-1 pr-3">Vol</th>
+            <th class="text-left py-1 pr-3">Apertura</th>
+            <th class="text-left py-1 pr-3">SL</th>
+            <th class="text-left py-1 pr-3">TP</th>
+            <th class="text-left py-1 pr-3">Actual</th>
+            <th class="text-left py-1 pr-3">Profit</th>
             <th class="text-left py-1">Swap</th>
           </tr>
         </thead>
         <tbody id="positionsBody" class="font-medium"></tbody>
       </table>
-      <p class="text-xs text-gray-600 mt-2">* Operaciones en tiempo real desde tu MetaTrader 5 (Exness) vía Supabase</p>
+      <p class="text-[10px] text-gray-600 mt-1">* Tiempo real desde MT5 (Exness) vía Supabase</p>
     </div>
   </section>
 
-  <main class="flex-1 p-3 overflow-auto">
-    <div id="chartGrid" class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4"></div>
+  <main class="flex-1 p-2 overflow-auto">
+    <div id="chartGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-3"></div>
   </main>
 
   <section id="mt5Panel" class="hidden border-t-2 border-neon-orange/40 bg-dark-900">
-    <div class="px-4 py-2 flex items-center justify-between bg-dark-800">
-      <h2 class="font-display text-sm tracking-wider text-neon-orange flex items-center gap-2">
-        <span class="w-1.5 h-1.5 rounded-full bg-neon-orange"></span> METATRADER 5 WEB TERMINAL
-      </h2>
-      <div class="flex gap-2">
-        <input id="mt5Url" type="text" value="https://trade.mql5.com/trade" class="bg-dark-700 border border-gray-700 rounded px-3 py-1 text-sm w-80 text-gray-300 focus:outline-none focus:border-neon-orange" placeholder="URL del terminal web de tu broker">
-        <button onclick="loadMT5()" class="px-3 py-1 bg-neon-orange/20 border border-neon-orange/50 text-neon-orange text-sm rounded hover:bg-neon-orange/30">Cargar</button>
-        <button onclick="toggleMT5()" class="px-3 py-1 text-gray-400 hover:text-white text-sm">Cerrar</button>
+    <div class="px-3 py-2 flex items-center justify-between bg-dark-800">
+      <h2 class="font-display text-xs tracking-wider text-neon-orange">METATRADER 5 WEB</h2>
+      <div class="flex gap-2 items-center">
+        <input id="mt5Url" type="text" value="https://trade.mql5.com/trade" class="bg-dark-700 border border-gray-700 rounded px-2 py-1 text-xs w-48 text-gray-300">
+        <button onclick="loadMT5()" class="px-2 py-1 bg-neon-orange/20 border border-neon-orange/50 text-neon-orange text-xs rounded">Cargar</button>
+        <button onclick="toggleMT5()" class="text-gray-400 text-xs">Cerrar</button>
       </div>
     </div>
-    <div class="h-[420px]">
-      <iframe id="mt5Frame" src="https://trade.mql5.com/trade" class="w-full h-full border-0" allowfullscreen></iframe>
+    <div class="h-[50vh]">
+      <iframe id="mt5Frame" src="https://trade.mql5.com/trade" class="w-full h-full border-0"></iframe>
     </div>
   </section>
 
-  <footer class="border-t border-gray-800 py-2 px-4 text-center text-xs text-gray-600">
-    ESTEBAN FX © 2026 — Plataforma personal de análisis multi-gráfico + trading
-  </footer>
+  <footer class="border-t border-gray-800 py-1.5 text-center text-[10px] text-gray-600">ESTEBAN FX © 2026</footer>
 
   <script>
     const SUPABASE_URL = "https://mnlolmyxvnjwycbusnky.supabase.co";
@@ -127,67 +152,63 @@
     async function fetchPositions() {
       try {
         const response = await fetch(`${SUPABASE_URL}/rest/v1/open_positions?select=*&order=ticket.desc`, {
-          headers: {
-            "apikey": SUPABASE_KEY,
-            "Authorization": `Bearer ${SUPABASE_KEY}`
-          }
+          headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` }
         });
-        if (!response.ok) throw new Error("Error al cargar posiciones");
+        if (!response.ok) throw new Error("Error");
         const data = await response.json();
         renderPositions(data);
       } catch (err) {
-        console.error(err);
-        document.getElementById('positionsBody').innerHTML = `<tr><td colspan="9" class="py-4 text-center text-gray-500">No se pudieron cargar las operaciones. Verifica la conexión con Supabase.</td></tr>`;
+        document.getElementById('positionsBody').innerHTML = `<tr><td colspan="9" class="py-3 text-center text-gray-500">Sin conexión a Supabase</td></tr>`;
       }
     }
 
     function renderPositions(positions) {
       const tbody = document.getElementById('positionsBody');
       if (!positions || positions.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="9" class="py-4 text-center text-gray-500">No hay operaciones abiertas actualmente</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="9" class="py-3 text-center text-gray-500">No hay operaciones abiertas</td></tr>`;
         return;
       }
       tbody.innerHTML = positions.map(p => {
         const isBuy = p.type === 'BUY';
         const profit = parseFloat(p.profit) || 0;
         const profitClass = profit >= 0 ? 'text-neon-green' : 'text-red-400';
-        return `<tr class="border-t border-gray-800/50 hover:bg-dark-700/50">
-          <td class="py-2 pr-4 font-bold text-neon-cyan">${p.symbol}</td>
-          <td class="py-2 pr-4"><span class="px-2 py-0.5 rounded text-xs font-bold ${isBuy ? 'bg-neon-green/20 text-neon-green' : 'bg-red-500/20 text-red-400'}">${p.type}</span></td>
-          <td class="py-2 pr-4">${p.volume}</td>
-          <td class="py-2 pr-4">${p.open_price}</td>
-          <td class="py-2 pr-4 text-red-400">${p.sl || '-'}</td>
-          <td class="py-2 pr-4 text-neon-green">${p.tp || '-'}</td>
-          <td class="py-2 pr-4">${p.current_price || '-'}</td>
-          <td class="py-2 pr-4 font-bold ${profitClass}">${profit >= 0 ? '+' : ''}${profit.toFixed(2)}</td>
-          <td class="py-2">${parseFloat(p.swap || 0).toFixed(2)}</td>
+        return `<tr class="border-t border-gray-800/60">
+          <td class="py-1.5 pr-3 font-bold text-neon-cyan">${p.symbol}</td>
+          <td class="py-1.5 pr-3"><span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${isBuy ? 'bg-neon-green/20 text-neon-green' : 'bg-red-500/20 text-red-400'}">${p.type}</span></td>
+          <td class="py-1.5 pr-3">${p.volume}</td>
+          <td class="py-1.5 pr-3">${p.open_price}</td>
+          <td class="py-1.5 pr-3 text-red-400">${p.sl || '-'}</td>
+          <td class="py-1.5 pr-3 text-neon-green">${p.tp || '-'}</td>
+          <td class="py-1.5 pr-3">${p.current_price || '-'}</td>
+          <td class="py-1.5 pr-3 font-bold ${profitClass}">${profit >= 0 ? '+' : ''}${profit.toFixed(2)}</td>
+          <td class="py-1.5">${parseFloat(p.swap || 0).toFixed(2)}</td>
         </tr>`;
       }).join('');
     }
 
     let chartCount = 0;
-    const defaultSymbols = ["FX:EURUSD", "FX:GBPUSD", "FX:USDJPY", "FX:AUDUSD", "OANDA:XAUUSD", "BINANCE:BTCUSDT", "BINANCE:ETHUSDT", "NASDAQ:AAPL", "FX:USDCAD", "FX:USDCHF", "OANDA:NAS100USD", "BINANCE:SOLUSDT"];
+    const defaultSymbols = ["FX:EURUSD", "FX:GBPUSD", "FX:USDJPY", "OANDA:XAUUSD", "BINANCE:BTCUSDT", "BINANCE:ETHUSDT"];
 
     function createChartWidget(symbol, id) {
-      return `<div class="chart-container bg-dark-800 rounded-xl border border-gray-700/50 overflow-hidden flex flex-col glow-cyan" id="chart-${id}">
-        <div class="flex items-center justify-between px-3 py-2 bg-dark-900 border-b border-gray-700/50">
+      return `<div class="chart-box glow-cyan" id="chart-${id}">
+        <div class="chart-header">
           <div class="flex items-center gap-2">
-            <input type="text" value="${symbol}" class="bg-dark-700 border border-gray-600 rounded px-2 py-1 text-sm w-40 focus:outline-none focus:border-neon-cyan" onchange="changeSymbol(${id}, this.value)" placeholder="Ej: FX:EURUSD">
-            <span class="text-xs text-gray-500">#${id}</span>
+            <input type="text" value="${symbol}" class="bg-dark-700 border border-gray-600 rounded px-2 py-1 text-xs w-36 focus:outline-none focus:border-neon-cyan" onchange="changeSymbol(${id}, this.value)">
+            <span class="text-[10px] text-gray-500">#${id}</span>
           </div>
           <div class="flex gap-1">
-            <button onclick="reloadChart(${id})" class="text-xs px-2 py-1 rounded bg-dark-700 hover:bg-gray-700 text-gray-300">↻</button>
-            <button onclick="removeChart(${id})" class="text-xs px-2 py-1 rounded bg-red-900/40 hover:bg-red-800/60 text-red-400">✕</button>
+            <button onclick="reloadChart(${id})" class="text-xs px-2 py-1 rounded bg-dark-700 text-gray-300">↻</button>
+            <button onclick="removeChart(${id})" class="text-xs px-2 py-1 rounded bg-red-900/50 text-red-400">✕</button>
           </div>
         </div>
-        <div class="flex-1 relative" style="min-height:480px">
-          <iframe id="tv-${id}" class="tv-iframe absolute inset-0" src="https://s.tradingview.com/widgetembed/?frameElementId=tv-${id}&symbol=${encodeURIComponent(symbol)}&interval=60&hidesidetoolbar=0&hidetoptoolbar=0&symboledit=1&saveimage=1&toolbarbg=0a0a12&studies=[]&theme=dark&style=1&timezone=Etc%2FUTC&withdateranges=1&showpopupbutton=1&locale=es" allowfullscreen></iframe>
+        <div class="chart-body">
+          <iframe id="tv-${id}" src="https://s.tradingview.com/widgetembed/?frameElementId=tv-${id}&symbol=${encodeURIComponent(symbol)}&interval=60&hidesidetoolbar=0&hidetoptoolbar=0&symboledit=1&saveimage=1&toolbarbg=0a0a12&theme=dark&style=1&timezone=Etc%2FUTC&withdateranges=1&showpopupbutton=1&locale=es" allowfullscreen></iframe>
         </div>
       </div>`;
     }
 
     function addChart(symbol = null) {
-      if (chartCount >= 20) { alert("Máximo 20 gráficos alcanzado"); return; }
+      if (chartCount >= 20) { alert("Máximo 20 gráficos"); return; }
       chartCount++;
       const sym = symbol || defaultSymbols[(chartCount - 1) % defaultSymbols.length];
       document.getElementById('chartGrid').insertAdjacentHTML('beforeend', createChartWidget(sym, chartCount));
@@ -201,7 +222,7 @@
     function changeSymbol(id, newSymbol) {
       const iframe = document.getElementById(`tv-${id}`);
       if (iframe && newSymbol.trim()) {
-        iframe.src = `https://s.tradingview.com/widgetembed/?frameElementId=tv-${id}&symbol=${encodeURIComponent(newSymbol.trim())}&interval=60&hidesidetoolbar=0&hidetoptoolbar=0&symboledit=1&saveimage=1&toolbarbg=0a0a12&studies=[]&theme=dark&style=1&timezone=Etc%2FUTC&withdateranges=1&showpopupbutton=1&locale=es`;
+        iframe.src = `https://s.tradingview.com/widgetembed/?frameElementId=tv-${id}&symbol=${encodeURIComponent(newSymbol.trim())}&interval=60&hidesidetoolbar=0&hidetoptoolbar=0&symboledit=1&saveimage=1&toolbarbg=0a0a12&theme=dark&style=1&timezone=Etc%2FUTC&withdateranges=1&showpopupbutton=1&locale=es`;
       }
     }
 
@@ -220,7 +241,8 @@
     document.addEventListener('DOMContentLoaded', () => {
       fetchPositions();
       setInterval(fetchPositions, 4000);
-      for (let i = 0; i < 4; i++) addChart(); // Menos gráficos por defecto para que se vean más grandes
+      addChart("FX:EURUSD");
+      addChart("FX:GBPUSD");
     });
   </script>
 </body>

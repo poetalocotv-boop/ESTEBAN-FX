@@ -38,7 +38,17 @@ function renderizarTabla(signals) {
     return
   }
 
+  // Filtrar para mostrar únicamente el estado más reciente por cada ticket único
+  const ticketsUnicos = {};
   signals.forEach(sig => {
+    if (!ticketsUnicos[sig.ticket] || sig.id > ticketsUnicos[sig.ticket].id) {
+      ticketsUnicos[sig.ticket] = sig;
+    }
+  });
+
+  const listaFiltrada = Object.values(ticketsUnicos);
+
+  listaFiltrada.forEach(sig => {
     const fila = document.createElement('tr')
     const esCompra = sig.action === 'BUY'
     const colorAccion = esCompra ? '#22c55e' : '#ef4444'
@@ -64,4 +74,4 @@ function suscripcionRealtime() {
       cargarSenales()
     })
     .subscribe()
-  }
+}

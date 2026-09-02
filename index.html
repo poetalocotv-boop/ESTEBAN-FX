@@ -10,97 +10,93 @@
       theme: {
         extend: {
           colors: {
-            neon: { cyan: '#00f5ff', pink: '#ff2d95', purple: '#b026ff', green: '#00ff9d', orange: '#ff6b00', gold: '#ffd700' },
-            dark: { 950: '#030308', 900: '#08080f', 800: '#0f0f1a', 700: '#161625', 600: '#1e1e30' }
+            neon: { cyan: '#00838f', pink: '#d81b60', purple: '#7b1fa2', green: '#2e7d32', orange: '#e65100', gold: '#f57f17' },
+            light: { 50: '#ffffff', 100: '#f4f6f8', 200: '#e5e9ef', 300: '#d0d7de', 800: '#24292f' }
           },
           fontFamily: { display: ['Orbitron', 'sans-serif'], body: ['Rajdhani', 'sans-serif'] }
         }
       }
     }
   </script>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; }
     body {
-      font-family: 'Rajdhani', sans-serif; background: #030308; margin: 0;
-      background-image: radial-gradient(ellipse at 20% 20%, rgba(0,245,255,0.06) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 80%, rgba(176,38,255,0.05) 0%, transparent 50%);
-      background-attachment: fixed;
+      font-family: 'Rajdhani', sans-serif; background: #f4f6f8; color: #24292f; margin: 0;
     }
     .font-display { font-family: 'Orbitron', sans-serif; }
-    .glow-cyan { box-shadow: 0 0 20px rgba(0,245,255,0.25), inset 0 0 20px rgba(0,245,255,0.03); }
     .chart-box {
       display: flex; flex-direction: column;
-      background: linear-gradient(145deg, #0f0f1a, #0a0a14);
-      border: 1px solid rgba(0,245,255,0.15); border-radius: 14px; overflow: hidden;
-      height: 70vh; min-height: 440px; transition: border-color 0.3s, box-shadow 0.3s;
+      background: #0f0f1a;
+      border: 1px solid #d0d7de; border-radius: 14px; overflow: hidden;
+      height: 70vh; min-height: 440px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: border-color 0.3s, box-shadow 0.3s;
     }
-    .chart-box:hover { border-color: rgba(0,245,255,0.35); box-shadow: 0 0 25px rgba(0,245,255,0.12); }
+    .chart-box:hover { border-color: #00838f; box-shadow: 0 6px 16px rgba(0,131,143,0.2); }
     .chart-header {
       flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 14px; background: linear-gradient(90deg, rgba(0,245,255,0.08), rgba(176,38,255,0.06));
-      border-bottom: 1px solid rgba(0,245,255,0.12);
+      padding: 10px 14px; background: #f8fafc;
+      border-bottom: 1px solid #e5e9ef;
     }
     .chart-body { flex: 1; position: relative; width: 100%; min-height: 0; }
     .chart-body iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-    .header-gradient { background: linear-gradient(90deg, rgba(3,3,8,0.98), rgba(15,15,26,0.95)); border-bottom: 1px solid rgba(0,245,255,0.2); }
-    .logo-box { background: linear-gradient(135deg, #00f5ff, #b026ff); box-shadow: 0 0 20px rgba(0,245,255,0.4); }
-    .btn-neon { transition: all 0.2s; }
-    .btn-neon:hover { transform: translateY(-1px); filter: brightness(1.15); }
-    .positions-bar { background: linear-gradient(90deg, rgba(255,45,149,0.08), rgba(0,245,255,0.05)); border-bottom: 1px solid rgba(255,45,149,0.2); }
+    .header-gradient { background: #ffffff; border-bottom: 1px solid #e5e9ef; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    .logo-box { background: linear-gradient(135deg, #00838f, #7b1fa2); color: #ffffff; box-shadow: 0 4px 10px rgba(0,131,143,0.3); }
+    .btn-neon { transition: all 0.2s; font-weight: 700; }
+    .btn-neon:hover { transform: translateY(-1px); filter: brightness(1.05); }
+    .positions-bar { background: #ffffff; border-bottom: 1px solid #e5e9ef; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
     .live-dot { animation: pulse 1.5s infinite; }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-    .title-glow { text-shadow: 0 0 30px rgba(0,245,255,0.3); }
     .scrollbar-thin::-webkit-scrollbar { height: 4px; width: 4px; }
-    .scrollbar-thin::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+    .scrollbar-thin::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
   </style>
 </head>
-<body class="text-gray-100 min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col">
 
   <header class="header-gradient sticky top-0 z-50 backdrop-blur-md">
     <div class="px-3 py-3 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="logo-box w-10 h-10 rounded-xl flex items-center justify-center font-display font-black text-dark-950 text-sm tracking-tighter">EF</div>
+        <div class="logo-box w-10 h-10 rounded-xl flex items-center justify-center font-display font-black text-sm tracking-tighter">EF</div>
         <div>
-          <h1 class="font-display font-extrabold text-xl tracking-widest title-glow text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan via-white to-neon-pink">ESTEBAN FX</h1>
-          <p class="text-[10px] text-gray-500 tracking-[0.25em] uppercase">Multi-Chart Command Center</p>
+          <h1 class="font-display font-extrabold text-xl tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan via-gray-900 to-neon-pink">ESTEBAN FX</h1>
+          <p class="text-[10px] text-gray-500 tracking-[0.25em] uppercase font-bold">Multi-Chart Command Center</p>
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-neon-green/10 border border-neon-green/30">
-          <span class="w-1.5 h-1.5 rounded-full bg-neon-green live-dot"></span>
-          <span class="text-[10px] text-neon-green font-semibold tracking-wider">LIVE</span>
+        <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 live-dot"></span>
+          <span class="text-[10px] text-emerald-700 font-bold tracking-wider">LIVE</span>
         </div>
-        <button onclick="toggleMT5()" class="btn-neon px-3 py-1.5 rounded-lg bg-neon-orange/15 border border-neon-orange/40 text-neon-orange text-xs font-bold tracking-wide">MT5</button>
-        <button onclick="addChart()" class="btn-neon px-3 py-1.5 rounded-lg bg-neon-cyan/15 border border-neon-cyan/40 text-neon-cyan text-xs font-bold tracking-wide">+ Gráfico</button>
+        <button onclick="toggleMT5()" class="btn-neon px-3 py-1.5 rounded-lg bg-amber-50 border border-amber-300 text-amber-700 text-xs tracking-wide">MT5</button>
+        <button onclick="addChart()" class="btn-neon px-3 py-1.5 rounded-lg bg-cyan-50 border border-cyan-300 text-cyan-800 text-xs tracking-wide">+ Gráfico</button>
       </div>
     </div>
   </header>
 
   <section class="positions-bar">
     <div class="px-3 py-2 flex items-center justify-between">
-      <h2 class="font-display text-xs tracking-[0.2em] text-neon-pink flex items-center gap-2 font-semibold">
+      <h2 class="font-display text-xs tracking-[0.2em] text-neon-pink flex items-center gap-2 font-bold">
         <span class="w-1.5 h-1.5 rounded-full bg-neon-pink live-dot"></span> OPERACIONES ABIERTAS
       </h2>
-      <button onclick="togglePositions()" class="text-[10px] text-gray-500 hover:text-gray-300 tracking-wider uppercase">Mostrar / Ocultar</button>
+      <button onclick="togglePositions()" class="text-[10px] text-gray-500 hover:text-gray-800 font-bold tracking-wider uppercase">Mostrar / Ocultar</button>
     </div>
     <div id="positionsPanel" class="px-3 pb-2.5 overflow-x-auto scrollbar-thin">
       <table class="w-full text-xs min-w-[720px]">
         <thead>
-          <tr class="text-gray-500 uppercase tracking-wider text-[10px]">
-            <th class="text-left py-1.5 pr-3">Ticket</th>
-            <th class="text-left py-1.5 pr-3">Símbolo</th>
-            <th class="text-left py-1.5 pr-3">Acción</th>
-            <th class="text-left py-1.5 pr-3">Volumen</th>
-            <th class="text-left py-1.5 pr-3">Precio</th>
-            <th class="text-left py-1.5 pr-3">Profit ($)</th>
+          <tr class="text-gray-500 uppercase tracking-wider text-[10px] border-b border-gray-200">
+            <th class="text-left py-2 pr-3">Ticket</th>
+            <th class="text-left py-2 pr-3">Símbolo</th>
+            <th class="text-left py-2 pr-3">Acción</th>
+            <th class="text-left py-2 pr-3">Volumen</th>
+            <th class="text-left py-2 pr-3">Precio</th>
+            <th class="text-left py-2 pr-3">Profit ($)</th>
           </tr>
         </thead>
-        <tbody id="signals-table-body" class="font-medium">
-          <tr><td colspan="6" class="py-4 text-center text-gray-500">Cargando operaciones en tiempo real...</td></tr>
+        <tbody id="signals-table-body" class="font-semibold text-gray-800">
+          <tr><td colspan="6" class="py-4 text-center text-gray-400">Cargando operaciones en tiempo real...</td></tr>
         </tbody>
       </table>
-      <p class="text-[10px] text-gray-600 mt-1.5 tracking-wide">Sincronizado en tiempo real desde MetaTrader 5 → Supabase → Vercel</p>
+      <p class="text-[10px] text-gray-400 mt-2 tracking-wide font-medium">Sincronizado en tiempo real desde MetaTrader 5 → Supabase → Vercel</p>
     </div>
   </section>
 
@@ -108,20 +104,20 @@
     <div id="chartGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-3"></div>
   </main>
 
-  <section id="mt5Panel" class="hidden border-t border-neon-orange/30 bg-dark-900">
-    <div class="px-3 py-2 flex items-center justify-between bg-gradient-to-r from-neon-orange/10 to-transparent">
-      <h2 class="font-display text-xs tracking-[0.15em] text-neon-orange font-semibold">METATRADER 5 WEB TERMINAL</h2>
+  <section id="mt5Panel" class="hidden border-t border-gray-300 bg-white shadow-lg">
+    <div class="px-3 py-2 flex items-center justify-between bg-gray-50">
+      <h2 class="font-display text-xs tracking-[0.15em] text-amber-700 font-bold">METATRADER 5 WEB TERMINAL</h2>
       <div class="flex gap-2 items-center">
-        <input id="mt5Url" type="text" value="https://trade.mql5.com/trade" class="bg-dark-700 border border-gray-700 rounded-lg px-2.5 py-1 text-xs w-52 text-gray-300 focus:outline-none focus:border-neon-orange">
-        <button onclick="loadMT5()" class="btn-neon px-2.5 py-1 bg-neon-orange/20 border border-neon-orange/40 text-neon-orange text-xs rounded-lg font-semibold">Cargar</button>
-        <button onclick="toggleMT5()" class="text-gray-500 text-xs hover:text-white">Cerrar</button>
+        <input id="mt5Url" type="text" value="https://trade.mql5.com/trade" class="bg-white border border-gray-300 rounded-lg px-2.5 py-1 text-xs w-52 text-gray-700 focus:outline-none focus:border-amber-600">
+        <button onclick="loadMT5()" class="btn-neon px-2.5 py-1 bg-amber-50 border border-amber-300 text-amber-700 text-xs rounded-lg">Cargar</button>
+        <button onclick="toggleMT5()" class="text-gray-500 text-xs hover:text-gray-800 font-bold">Cerrar</button>
       </div>
     </div>
     <div class="h-[48vh]"><iframe id="mt5Frame" src="https://trade.mql5.com/trade" class="w-full h-full border-0"></iframe></div>
   </section>
 
-  <footer class="border-t border-gray-800/60 py-2 text-center">
-    <p class="text-[10px] text-gray-600 tracking-[0.2em] uppercase">ESTEBAN FX · Command Center · 2026</p>
+  <footer class="border-t border-gray-200 py-2 text-center bg-white">
+    <p class="text-[10px] text-gray-400 tracking-[0.2em] uppercase font-bold">ESTEBAN FX · Command Center · 2026</p>
   </footer>
 
   <script>
@@ -129,21 +125,21 @@
     const defaultSymbols = ["FX:EURUSD", "FX:GBPUSD", "FX:USDJPY", "OANDA:XAUUSD", "BINANCE:BTCUSDT", "BINANCE:ETHUSDT"];
 
     function createChartWidget(symbol, id) {
-      return `<div class="chart-box glow-cyan" id="chart-${id}">
+      return `<div class="chart-box" id="chart-${id}">
         <div class="chart-header">
           <div class="flex items-center gap-2">
-            <input type="text" value="${symbol}" class="bg-dark-700/80 border border-gray-600/50 rounded-lg px-2.5 py-1 text-xs w-36 focus:outline-none focus:border-neon-cyan text-gray-200" onchange="changeSymbol(${id}, this.value)">
-            <span class="text-[10px] text-gray-600 font-display">#${id}</span>
+            <input type="text" value="${symbol}" class="bg-white border border-gray-300 rounded-lg px-2.5 py-1 text-xs w-36 focus:outline-none focus:border-cyan-700 text-gray-800 font-semibold" onchange="changeSymbol(${id}, this.value)">
+            <span class="text-[10px] text-gray-400 font-display font-bold">#${id}</span>
           </div>
           <div class="flex gap-1.5">
-            <button onclick="reloadChart(${id})" class="text-xs px-2 py-1 rounded-md bg-dark-600/80 text-gray-400 hover:text-neon-cyan transition">↻</button>
-            <button onclick="removeChart(${id})" class="text-xs px-2 py-1 rounded-md bg-red-950/50 text-red-400/80 hover:text-red-400 transition">✕</button>
+            <button onclick="reloadChart(${id})" class="text-xs px-2 py-1 rounded-md bg-gray-100 text-gray-600 hover:text-cyan-800 transition font-bold">↻</button>
+            <button onclick="removeChart(${id})" class="text-xs px-2 py-1 rounded-md bg-red-50 text-red-600 hover:bg-red-100 transition font-bold">✕</button>
           </div>
         </div>
         <div class="chart-body">
           <iframe id="tv-${id}" src="https://s.tradingview.com/widgetembed/?frameElementId=tv-${id}&symbol=${encodeURIComponent(symbol)}&interval=60&hidesidetoolbar=0&hidetoptoolbar=0&symboledit=1&saveimage=1&toolbarbg=0a0a14&theme=dark&style=1&timezone=Etc%2FUTC&withdateranges=1&showpopupbutton=1&locale=es" allowfullscreen></iframe>
         </div>
-      `;
+      </div>`;
     }
 
     function addChart(symbol = null) {
@@ -174,4 +170,3 @@
   <script type="module" src="app.js"></script>
 </body>
 </html>
-

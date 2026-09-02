@@ -40,7 +40,7 @@
     .glow-cyan { box-shadow: 0 0 15px rgba(0,245,255,0.3); }
     .glow-pink { box-shadow: 0 0 15px rgba(255,0,170,0.3); }
     .glow-green { box-shadow: 0 0 12px rgba(0,255,157,0.25); }
-    .chart-container { min-height: 380px; }
+    .chart-container { min-height: 520px; }
     .scrollbar-thin::-webkit-scrollbar { height: 6px; width: 6px; }
     .scrollbar-thin::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
     .tv-iframe { width: 100%; height: 100%; border: none; }
@@ -97,7 +97,7 @@
   </section>
 
   <main class="flex-1 p-3 overflow-auto">
-    <div id="chartGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3"></div>
+    <div id="chartGrid" class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4"></div>
   </main>
 
   <section id="mt5Panel" class="hidden border-t-2 border-neon-orange/40 bg-dark-900">
@@ -180,8 +180,8 @@
             <button onclick="removeChart(${id})" class="text-xs px-2 py-1 rounded bg-red-900/40 hover:bg-red-800/60 text-red-400">✕</button>
           </div>
         </div>
-        <div class="flex-1 relative" style="min-height:340px">
-          <iframe id="tv-${id}" class="tv-iframe absolute inset-0" src="https://s.tradingview.com/widgetembed/?frameElementId=tv-${id}&symbol=${encodeURIComponent(symbol)}&interval=60&hidesidetoolbar=0&hidetoptoolbar=0&symboledit=1&saveimage=1&toolbarbg=0a0a12&studies=[]&theme=dark&style=1&timezone=Etc%2FUTC&withdateranges=1&showpopupbutton=1&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=es" allowfullscreen></iframe>
+        <div class="flex-1 relative" style="min-height:480px">
+          <iframe id="tv-${id}" class="tv-iframe absolute inset-0" src="https://s.tradingview.com/widgetembed/?frameElementId=tv-${id}&symbol=${encodeURIComponent(symbol)}&interval=60&hidesidetoolbar=0&hidetoptoolbar=0&symboledit=1&saveimage=1&toolbarbg=0a0a12&studies=[]&theme=dark&style=1&timezone=Etc%2FUTC&withdateranges=1&showpopupbutton=1&locale=es" allowfullscreen></iframe>
         </div>
       </div>`;
     }
@@ -220,7 +220,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       fetchPositions();
       setInterval(fetchPositions, 4000);
-      for (let i = 0; i < 6; i++) addChart();
+      for (let i = 0; i < 4; i++) addChart(); // Menos gráficos por defecto para que se vean más grandes
     });
   </script>
 </body>

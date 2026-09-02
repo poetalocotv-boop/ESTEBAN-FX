@@ -88,14 +88,19 @@
       <table class="w-full text-xs min-w-[720px]">
         <thead>
           <tr class="text-gray-500 uppercase tracking-wider text-[10px]">
-            <th class="text-left py-1.5 pr-3">Par</th><th class="text-left py-1.5 pr-3">Tipo</th><th class="text-left py-1.5 pr-3">Vol</th>
-            <th class="text-left py-1.5 pr-3">Apertura</th><th class="text-left py-1.5 pr-3">SL</th><th class="text-left py-1.5 pr-3">TP</th>
-            <th class="text-left py-1.5 pr-3">Actual</th><th class="text-left py-1.5 pr-3">Profit</th><th class="text-left py-1.5">Swap</th>
+            <th class="text-left py-1.5 pr-3">Ticket</th>
+            <th class="text-left py-1.5 pr-3">Símbolo</th>
+            <th class="text-left py-1.5 pr-3">Acción</th>
+            <th class="text-left py-1.5 pr-3">Volumen</th>
+            <th class="text-left py-1.5 pr-3">Precio</th>
+            <th class="text-left py-1.5 pr-3">Profit ($)</th>
           </tr>
         </thead>
-        <tbody id="positionsBody" class="font-medium"></tbody>
+        <tbody id="signals-table-body" class="font-medium">
+          <tr><td colspan="6" class="py-4 text-center text-gray-500">Cargando operaciones en tiempo real...</td></tr>
+        </tbody>
       </table>
-      <p class="text-[10px] text-gray-600 mt-1.5 tracking-wide">Sincronizado en tiempo real desde MetaTrader 5 (Exness) → Supabase</p>
+      <p class="text-[10px] text-gray-600 mt-1.5 tracking-wide">Sincronizado en tiempo real desde MetaTrader 5 → Supabase → Vercel</p>
     </div>
   </section>
 
@@ -120,45 +125,6 @@
   </footer>
 
   <script>
-    const SUPABASE_URL = "https://mnlolmyxvnjwycbusnky.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_Xf_wFAH_REGOvr8M0yjLVQ_dYmO7NOT";
-
-    async function fetchPositions() {
-      try {
-        const response = await fetch(`${SUPABASE_URL}/rest/v1/open_positions?select=*&order=ticket.desc`, {
-          headers: { "apikey": SUPABASE_KEY, "Authorization": `Bearer ${SUPABASE_KEY}` }
-        });
-        if (!response.ok) throw new Error("Error");
-        renderPositions(await response.json());
-      } catch (err) {
-        document.getElementById('positionsBody').innerHTML = `<tr><td colspan="9" class="py-4 text-center text-gray-500 tracking-wide">Sin conexión a Supabase</td></tr>`;
-      }
-    }
-
-    function renderPositions(positions) {
-      const tbody = document.getElementById('positionsBody');
-      if (!positions || positions.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="9" class="py-4 text-center text-gray-500 tracking-wide">No hay operaciones abiertas</td></tr>`;
-        return;
-      }
-      tbody.innerHTML = positions.map(p => {
-        const isBuy = p.type === 'BUY';
-        const profit = parseFloat(p.profit) || 0;
-        const profitClass = profit >= 0 ? 'text-neon-green' : 'text-red-400';
-        return `<tr class="border-t border-gray-800/40 hover:bg-white/5 transition">
-          <td class="py-2 pr-3 font-bold text-neon-cyan tracking-wide">${p.symbol}</td>
-          <td class="py-2 pr-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold tracking-wider ${isBuy ? 'bg-neon-green/15 text-neon-green border border-neon-green/30' : 'bg-red-500/15 text-red-400 border border-red-500/30'}">${p.type}</span></td>
-          <td class="py-2 pr-3">${p.volume}</td>
-          <td class="py-2 pr-3">${p.open_price}</td>
-          <td class="py-2 pr-3 text-red-400">${p.sl || '-'}</td>
-          <td class="py-2 pr-3 text-neon-green">${p.tp || '-'}</td>
-          <td class="py-2 pr-3">${p.current_price || '-'}</td>
-          <td class="py-2 pr-3 font-bold ${profitClass}">${profit >= 0 ? '+' : ''}${profit.toFixed(2)}</td>
-          <td class="py-2">${parseFloat(p.swap || 0).toFixed(2)}</td>
-        </tr>`;
-      }).join('');
-    }
-
     let chartCount = 0;
     const defaultSymbols = ["FX:EURUSD", "FX:GBPUSD", "FX:USDJPY", "OANDA:XAUUSD", "BINANCE:BTCUSDT", "BINANCE:ETHUSDT"];
 
@@ -177,7 +143,7 @@
         <div class="chart-body">
           <iframe id="tv-${id}" src="https://s.tradingview.com/widgetembed/?frameElementId=tv-${id}&symbol=${encodeURIComponent(symbol)}&interval=60&hidesidetoolbar=0&hidetoptoolbar=0&symboledit=1&saveimage=1&toolbarbg=0a0a14&theme=dark&style=1&timezone=Etc%2FUTC&withdateranges=1&showpopupbutton=1&locale=es" allowfullscreen></iframe>
         </div>
-      </div>`;
+      `;
     }
 
     function addChart(symbol = null) {
@@ -199,11 +165,13 @@
     function togglePositions() { document.getElementById('positionsPanel').classList.toggle('hidden'); }
 
     document.addEventListener('DOMContentLoaded', () => {
-      fetchPositions();
-      setInterval(fetchPositions, 4000);
       addChart("FX:EURUSD");
       addChart("FX:GBPUSD");
     });
   </script>
+
+  <!-- Script principal conectado con Supabase en tiempo real -->
+  <script type="module" src="app.js"></script>
 </body>
 </html>
+
